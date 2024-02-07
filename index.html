@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wait Time Heatmap</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <style>
+            #map {
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            var map = L.map('map').setView([45.52, -122.67], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18,
+            }).addTo(map);
+
+            var svg = L.svg().addTo(map);
+            var g = d3.select(svg._container).select('g');
+
+            d3.csv('wait_time_per_stop.csv').then(function (data) {
+                data.forEach(function (d) {
+                    d.wait_time = +d.wait_time;
+                });
+
+                var sizeScale = d3
+                    .scaleLinear()
+                    .domain(d3.extent(data, (d) => d.wait_time))
+                    .range([10, 100]);
+
+                var opacityScale = d3
+                    .scaleLinear()
+                    .domain(d3.extent(data, (d) => d.wait_time))
+                    .range([0.3, 1]);
+
+                g.selectAll('circle')
+                    .data(data)
+                    .enter()
+                    .append('circle')
+                    .attr('cx', (d) => map.latLngToLayerPoint([+d.stop_lat, +d.stop_lon]).x)
+                    .attr('cy', (d) => map.latLngToLayerPoint([+d.stop_lat, +d.stop_lon]).y)
+                    .attr('r', (d) => sizeScale(d.wait_time))
+                    .style('fill', 'black')
+                    .style('opacity', (d) => opacityScale(d.wait_time));
+
+                map.on('moveend', updateCircles);
+                updateCircles();
+
+                function updateCircles() {
+                    g.selectAll('circle')
+                        .attr('cx', (d) => map.latLngToLayerPoint([+d.stop_lat, +d.stop_lon]).x)
+                        .attr('cy', (d) => map.latLngToLayerPoint([+d.stop_lat, +d.stop_lon]).y);
+                }
+            });
+        </script>
+    </body>
+</html>
