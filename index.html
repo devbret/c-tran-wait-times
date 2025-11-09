@@ -166,18 +166,18 @@
   </head>
   <body>
     <div id="map"></div>
-    <div id="loading" class="loading">Loading stops…</div>
+    <div id="loading" class="loading">Loading stops...</div>
     <div id="tooltip" class="tooltip"></div>
 
     <aside id="panel" class="info-panel">
-      <button id="panelClose" class="close" title="Close">×</button>
+      <button id="panelClose" class="close" title="Close">x</button>
       <h3 id="panelTitle">Stop</h3>
       <div class="row">
-        <span>Wait (avg)</span><strong id="panelWait">–</strong>
+        <span>Wait (avg)</span><strong id="panelWait">-</strong>
       </div>
-      <div class="row"><span>Rank</span><strong id="panelRank">–</strong></div>
+      <div class="row"><span>Rank</span><strong id="panelRank">-</strong></div>
       <div class="row">
-        <span>Percentile</span><strong id="panelPct">–</strong>
+        <span>Percentile</span><strong id="panelPct">-</strong>
       </div>
       <div class="meter"><div id="panelMeter" style="width: 0%"></div></div>
       <div style="margin-top: 10px; color: #555">Higher bar = longer waits</div>
@@ -346,6 +346,8 @@
               tooltip.style("opacity", 0);
             })
             .on("click", function (event, d) {
+              event.stopPropagation();
+
               const rankIndex = d3.bisectLeft(waits, d.wait);
               const rank = rankIndex + 1;
               const pct = 100 * (rankIndex / (waits.length - 1));
