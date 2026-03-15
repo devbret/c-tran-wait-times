@@ -5,14 +5,14 @@ const street = L.tileLayer(
   {
     attribution: "© OpenStreetMap contributors",
     maxZoom: 19,
-  }
+  },
 ).addTo(map);
 
 const dark = L.tileLayer(
   "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
   {
     attribution: "© CARTO, OSM",
-  }
+  },
 );
 
 L.control.layers({ Street: street, Dark: dark }).addTo(map);
@@ -60,7 +60,7 @@ d3.csv("wait_time_per_stop.csv")
         (d) =>
           Number.isFinite(d.lat) &&
           Number.isFinite(d.lon) &&
-          Number.isFinite(d.wait)
+          Number.isFinite(d.wait),
       );
 
     const waits = data.map((d) => d.wait).sort((a, b) => a - b);
@@ -148,7 +148,7 @@ d3.csv("wait_time_per_stop.csv")
           .html(
             `<strong>Stop ${
               d.stop_id
-            }</strong><br/>Avg wait: <strong>${d.wait.toFixed(1)} min</strong>`
+            }</strong><br/>Avg wait: <strong>${d.wait.toFixed(1)} min</strong>`,
           );
       })
       .on("mouseleave", function () {
@@ -173,8 +173,8 @@ d3.csv("wait_time_per_stop.csv")
             `<div style="font:13px system-ui,sans-serif;"><strong>Stop ${
               d.stop_id
             }</strong><br>Avg wait: <strong>${d.wait.toFixed(
-              1
-            )} min</strong></div>`
+              1,
+            )} min</strong></div>`,
           )
           .openOn(map);
       });
