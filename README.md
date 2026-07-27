@@ -1,10 +1,10 @@
 # C-TRAN Average Wait Times
 
-![Screenshot of map visualizing C-TRAN stops.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/3e67cb89-cc9f-4e63-bb0f-9460e7910927.png)
+![Screenshot of map visualizing C-TRAN stops.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/14212b07-52df-4212-8b69-fa5647f3eb02.png)
 
 Interactive map visualizing average passenger wait times at C-TRAN bus stops in Vancouver, Washington, calculated from publicly available [GTFS schedule data](https://mail.c-tran.com/about-c-tran/business/c-tran-gtfs-data).
 
-## Overview
+## Application Overview
 
 This project turns raw GTFS data into a stop-level dataset and interactive map. The Python script loads `stops.txt` and `stop_times.txt`, normalizes GTFS times that roll past midnight, converts them to datetimes and sorts by `stop_id` and arrival time.
 
@@ -12,7 +12,7 @@ For each stop it computes the gap to the next arrival, averages those stretches 
 
 The HTML page renders that CSV file onto a Leaflet base map with a D3 overlay. Each stop appears as a scalable bubble whose size and color encode average wait, with fast, debounced re-projection on pan and zoom. Hover tooltips show stop ID and wait; clicking opens an info panel with exact wait, rank, percentile and a meter bar. A built-in legend also summarizes the color ramp and bubble sizes.
 
-## Set Up Instructions
+## Basic Setup Instructions
 
 Below are the required software programs and set up steps for using this application on a Linux machine.
 
@@ -52,7 +52,7 @@ Below are the required software programs and set up steps for using this applica
 
 14. Exit the virtual environment: `deactivate`
 
-## Additional Notes
+## Other Considerations
 
 The purpose of this repo is to demonstrate an ability to do the follwoing:
 

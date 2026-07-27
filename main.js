@@ -1,5 +1,13 @@
 const map = L.map("map").setView([45.64, -122.55], 12);
 
+const light = L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+  {
+    attribution: "© CARTO, © OpenStreetMap contributors",
+    maxZoom: 20,
+  },
+);
+
 const street = L.tileLayer(
   "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {
@@ -11,11 +19,15 @@ const street = L.tileLayer(
 const dark = L.tileLayer(
   "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
   {
-    attribution: "© CARTO, OSM",
+    attribution: "© CARTO, © OpenStreetMap contributors",
+    maxZoom: 20,
   },
 );
 
-L.control.layers({ Street: street, Dark: dark }).addTo(map);
+L.control.layers({ Street: street, Light: light, Dark: dark }).addTo(map);
+map.on("baselayerchange", (e) =>
+  document.body.classList.toggle("dark", e.name === "Dark"),
+);
 
 const svgLayer = L.svg({ clickable: true }).addTo(map);
 const g = d3.select(svgLayer._container).select("g");
@@ -31,10 +43,10 @@ document.getElementById("panelClose").onclick = closePanel;
 map.on("click", closePanel);
 
 function openPanel() {
-  panelEl.style.display = "block";
+  panelEl.classList.add("open");
 }
 function closePanel() {
-  panelEl.style.display = "none";
+  panelEl.classList.remove("open");
 }
 
 function debounce(fn, wait = 50) {
@@ -67,13 +79,12 @@ d3.csv("wait_time_per_stop.csv")
     const minWait = d3.min(waits),
       maxWait = d3.max(waits);
     const meanWait = d3.mean(waits);
-    const q1 = d3.quantile(waits, 0.25),
-      q3 = d3.quantile(waits, 0.75);
+    const medianWait = d3.median(waits);
 
     const color = d3
       .scaleLinear()
       .domain([minWait, meanWait, maxWait])
-      .range(["#3fb950", "#f2e34b", "#d73a49"])
+      .range(["#3fb950", "#eec331", "#d73a49"])
       .clamp(true);
 
     const baseRadius = d3.scaleSqrt().domain([minWait, maxWait]).range([3, 33]);
@@ -92,11 +103,7 @@ d3.csv("wait_time_per_stop.csv")
       .data(data, (d) => d.stop_id)
       .join((enter) => {
         const s = enter.append("g").attr("class", "stop");
-        s.append("circle")
-          .attr("class", "bubble")
-          .attr("stroke", "rgba(0,0,0,0.25)")
-          .attr("stroke-width", 1)
-          .attr("fill-opacity", 0.75);
+        s.append("circle").attr("class", "bubble");
         s.append("circle").attr("class", "hit");
         s.append("text")
           .attr("class", "stop-label")
@@ -140,6 +147,9 @@ d3.csv("wait_time_per_stop.csv")
 
     groups
       .select(".hit")
+      .on("mouseenter", function () {
+        d3.select(this.parentNode).classed("hovered", true);
+      })
       .on("mousemove", function (event, d) {
         tooltip
           .style("left", event.pageX + "px")
@@ -153,6 +163,7 @@ d3.csv("wait_time_per_stop.csv")
       })
       .on("mouseleave", function () {
         tooltip.style("opacity", 0);
+        d3.select(this.parentNode).classed("hovered", false);
       })
       .on("click", function (event, d) {
         event.stopPropagation();
@@ -166,17 +177,6 @@ d3.csv("wait_time_per_stop.csv")
         panelPct.textContent = `${pct.toFixed(1)}%`;
         panelMeter.style.width = `${pct}%`;
         openPanel();
-
-        L.popup()
-          .setLatLng([d.lat, d.lon])
-          .setContent(
-            `<div style="font:13px system-ui,sans-serif;"><strong>Stop ${
-              d.stop_id
-            }</strong><br>Avg wait: <strong>${d.wait.toFixed(
-              1,
-            )} min</strong></div>`,
-          )
-          .openOn(map);
       });
 
     const Legend = L.Control.extend({
@@ -194,21 +194,21 @@ d3.csv("wait_time_per_stop.csv")
               <div class="sizes">
                 <div style="text-align:center;">
                   <span class="dot" style="width:${
-                    baseRadius(q1) * 2
-                  }px;height:${baseRadius(q1) * 2}px;"></span>
-                  <div class="lab">${(q1 ?? minWait).toFixed(1)}m</div>
+                    baseRadius(minWait) * 2
+                  }px;height:${baseRadius(minWait) * 2}px;"></span>
+                  <div class="lab">${minWait.toFixed(1)}m</div>
                 </div>
                 <div style="text-align:center;">
                   <span class="dot" style="width:${
-                    baseRadius(meanWait) * 2
-                  }px;height:${baseRadius(meanWait) * 2}px;"></span>
-                  <div class="lab">${meanWait.toFixed(1)}m</div>
+                    baseRadius(medianWait) * 2
+                  }px;height:${baseRadius(medianWait) * 2}px;"></span>
+                  <div class="lab">${medianWait.toFixed(1)}m</div>
                 </div>
                 <div style="text-align:center;">
                   <span class="dot" style="width:${
-                    baseRadius(q3) * 2
-                  }px;height:${baseRadius(q3) * 2}px;"></span>
-                  <div class="lab">${(q3 ?? maxWait).toFixed(1)}m</div>
+                    baseRadius(maxWait) * 2
+                  }px;height:${baseRadius(maxWait) * 2}px;"></span>
+                  <div class="lab">${maxWait.toFixed(1)}m</div>
                 </div>
               </div>
             `;

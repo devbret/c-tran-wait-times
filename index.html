@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -25,7 +25,7 @@
     <div id="tooltip" class="tooltip"></div>
 
     <aside id="panel" class="info-panel">
-      <button id="panelClose" class="close" title="Close">x</button>
+      <button id="panelClose" class="close" aria-label="Close">&times;</button>
       <h3 id="panelTitle">Stop</h3>
       <div class="row">
         <span>Wait (avg)</span><strong id="panelWait">-</strong>
@@ -34,8 +34,8 @@
       <div class="row">
         <span>Percentile</span><strong id="panelPct">-</strong>
       </div>
-      <div class="meter"><div id="panelMeter" style="width: 0%"></div></div>
-      <div style="margin-top: 10px; color: #555">Higher bar = longer waits</div>
+      <div class="meter"><div id="panelMeter"></div></div>
+      <div class="hint">Higher bar = longer waits</div>
     </aside>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
