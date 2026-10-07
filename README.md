@@ -1,6 +1,6 @@
 # C-TRAN Average Wait Times
 
-![Screenshot of map visualizing C-TRAN stops.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/14212b07-52df-4212-8b69-fa5647f3eb02.png)
+![Screenshot of map visualizing C-TRAN stops.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/fa58702e-dd63-4f99-962f-461d95e20248.png)
 
 Interactive map visualizing average passenger wait times at C-TRAN bus stops in Vancouver, Washington, calculated from publicly available [GTFS schedule data](https://mail.c-tran.com/about-c-tran/business/c-tran-gtfs-data).
 
