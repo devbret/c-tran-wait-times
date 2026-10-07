@@ -40,7 +40,7 @@ Below are the required software programs and set up steps for using this applica
 
 8. Download the source [GTFS schedule data](https://mail.c-tran.com/about-c-tran/business/c-tran-gtfs-data) from the C-TRAN website
 
-9. Add the `stops.txt` and `stop_times.txt` files to the root of this directory
+9. Add the `stops.txt`, `stop_times.txt`, `trips.txt`, `calendar.txt` and `calendar_dates.txt` files to the root of this directory
 
 10. Process the data: `python3 app.py`
 
@@ -58,7 +58,7 @@ Below you will find information not covered in the installation and use sections
 
 ### Abilities Demonstrated
 
-The purpose of this repo is to demonstrate an ability to do the follwoing:
+The purpose of this repo is to demonstrate an ability to do the following:
 
 - Process `GTFS` data to calculate the average wait time between arrivals for each transit stop
 
