@@ -54,6 +54,10 @@ Below are the required software programs and set up steps for using this applica
 
 ## Other Considerations
 
+Below you will find information not covered in the installation and use sections above. Including the abilities this repo is intended to demonstrate. As well as an overview of the license this code is made available with. And a way to contact the maintainer with questions, suggestions and collaboration opportunities.
+
+### Abilities Demonstrated
+
 The purpose of this repo is to demonstrate an ability to do the follwoing:
 
 - Process `GTFS` data to calculate the average wait time between arrivals for each transit stop
@@ -61,5 +65,9 @@ The purpose of this repo is to demonstrate an ability to do the follwoing:
 - Combine statistics with latitude and longitude data to create a CSV dataset for visualization
 
 - Display each stop as an interactive bubble, where color and size represent average wait time
+
+### License Information
+
+This repository is distributed under the MIT License. You are free to use, copy, modify, merge, publish, distribute, sublicense and sell copies of this software, including as part of proprietary or commercial work. The single condition is the copyright and permission notices contained in the LICENSE file must be included with any copy or substantial portion of the software that you redistribute. The software is provided "as is", without warranty of any kind, and the copyright holder is not liable for any claim or damages arising from its use.
 
 If you found this project interesting, please feel free to visit [my website](https://bretbernhoft.com/) and reach out. It would be interesting to hear from others who are using D3.js to work with publicly available data.
